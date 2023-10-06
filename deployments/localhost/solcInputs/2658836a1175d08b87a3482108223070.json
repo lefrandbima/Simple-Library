@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/SimpleLibrary.sol": {
+      "content": "// SPDX-License-Identifier: MIT\r\npragma solidity 0.8.13;\r\n\r\ncontract SimpleLibrary {\r\n    // Struct untuk menyimpan data buku\r\n    struct Book {\r\n        string isbn;\r\n        string title;\r\n        uint256 year;\r\n        string author;\r\n    }\r\n\r\n    mapping(string => Book) private books;\r\n\r\n    address private admin;\r\n\r\n    event BookAdded(string indexed isbn, string title, uint256 year, string author);\r\n\r\n    event BookUpdated(string indexed isbn, string title, uint256 year, string author);\r\n\r\n    event BookDeleted(string indexed isbn);\r\n\r\n    modifier onlyAdmin() {\r\n        require(msg.sender == admin, \"Hanya admin yang dapat melakukan ini\");\r\n        _;\r\n    }\r\n\r\n    constructor() {\r\n        admin = msg.sender;\r\n    }\r\n\r\n    // Function untuk add buku\r\n    function addBook(string calldata _isbn, string calldata _title, uint256 _year, string calldata _author) public onlyAdmin {\r\n        require(bytes(_isbn).length > 0, \"ISBN tidak boleh kosong\");\r\n        require(bytes(_title).length > 0, \"Judul tidak boleh kosong\");\r\n        require(_year > 0, \"Tahun harus lebih dari 0\");\r\n\r\n        // Untuk ISBN unik\r\n        require(books[_isbn].year == 0, \"Buku dengan ISBN tersebut sudah ada\");\r\n\r\n        Book memory newBook = Book(_isbn, _title, _year, _author);\r\n        books[_isbn] = newBook;\r\n        emit BookAdded(_isbn, _title, _year, _author);\r\n    }\r\n\r\n    // Function untuk mengupdate buku \r\n    function updateBook(string calldata _isbn, string calldata _title, uint256 _year, string calldata _author) public onlyAdmin {\r\n        require(bytes(_isbn).length > 0, \"ISBN tidak boleh kosong\");\r\n\r\n        require(books[_isbn].year > 0, \"Buku dengan ISBN tersebut tidak ditemukan\");\r\n\r\n        books[_isbn] = Book(_isbn, _title, _year, _author);\r\n        emit BookUpdated(_isbn, _title, _year, _author);\r\n    }\r\n\r\n    // Function delete buku berdasarkan ISBN\r\n    function deleteBook(string calldata _isbn) public onlyAdmin {\r\n        require(bytes(_isbn).length > 0, \"ISBN tidak boleh kosong\");\r\n\r\n        require(books[_isbn].year > 0, \"Buku dengan ISBN tersebut tidak ditemukan\");\r\n\r\n        delete books[_isbn];\r\n        emit BookDeleted(_isbn);\r\n    }\r\n\r\n    // Function untuk get buku berdasarkan ISBN\r\n    function getBookByISBN(string calldata _isbn) public view returns (string memory, string memory, uint256, string memory) {\r\n        require(bytes(_isbn).length > 0, \"ISBN tidak boleh kosong\");\r\n\r\n        Book memory book = books[_isbn];\r\n        require(book.year > 0, \"Buku dengan ISBN tersebut tidak ditemukan\");\r\n\r\n        return (book.isbn, book.title, book.year, book.author);\r\n    }\r\n}\r\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
