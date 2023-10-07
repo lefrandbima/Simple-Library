@@ -63,7 +63,7 @@ describe("SimpleLibrary Contract", function () {
     try {
       await simpleLibrary.deleteBook(ISBN);
       const book = await simpleLibrary.getBookByISBN(ISBN);
-      expect.fail("Harusnya gagal");
+      expect.fail();
     } catch (error) {
       expect((error as Error).message).to.include("Buku dengan ISBN tersebut tidak ditemukan");
     }
