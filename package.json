@@ -9,7 +9,8 @@
     "compile": "npx hardhat compile",
     "clean": "npx hardhat clean",
     "deploy": "npx hardhat deploy",
-    "simulate": "npx hardhat node"
+    "simulate": "npx hardhat node",
+    "script": "npx hardhat run"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
