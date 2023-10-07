@@ -8,7 +8,7 @@ async function main() {
     // get signer
     const [admin] = await ethers.getSigners();
 
-    // add book
+    // Function addBook
     const addBook = await simpleLibrary.connect(admin).addBook('123hsher', 'manusia', 2020, 'lefrand');
     await addBook.wait();
 

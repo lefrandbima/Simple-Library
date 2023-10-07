@@ -5,6 +5,7 @@ async function main() {
     // contract instance
     const simpleLibrary = await ethers.getContract<SimpleLibrary>("SimpleLibrary");
 
+    // Function getBookByISBN
     const getBook = await simpleLibrary.getBookByISBN('123hsher');
     console.log('Detail buku :', getBook);
 }
